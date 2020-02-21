@@ -2,7 +2,7 @@
 # Imports
 #----------------------------------------------------------------------------#
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 # from flask.ext.sqlalchemy import SQLAlchemy
 import logging
 from logging import Formatter, FileHandler
@@ -50,23 +50,15 @@ def home():
 def about():
     return render_template('pages/placeholder.about.html')
 
+@app.route('/file-upload', methods = ['GET', 'POST'])
+def fileUpload():
+    f = request.files['file']
+    f.save(f.filename)
 
-@app.route('/login')
-def login():
-    form = LoginForm(request.form)
-    return render_template('forms/login.html', form=form)
-
-
-@app.route('/register')
-def register():
-    form = RegisterForm(request.form)
-    return render_template('forms/register.html', form=form)
+    resp = [{'song': 'song1', 'artist': 'artist1'},{'song': 'song2', 'artist': 'artist1'},{'song': 'song3', 'artist': 'artist2'}]
+    return jsonify(resp)
 
 
-@app.route('/forgot')
-def forgot():
-    form = ForgotForm(request.form)
-    return render_template('forms/forgot.html', form=form)
 
 # Error handlers.
 
